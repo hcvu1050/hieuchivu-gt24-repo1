@@ -8,8 +8,8 @@ def save_df_to_csv (path, filename: str, df: pd.DataFrame ):
         path (string)
         df (pandas DataFrame)
     """
-    if not filename.endswith (".csv"): name += ".csv"
+    if not filename.endswith (".csv"): filename+= ".csv"
     
-    output_folder = os.makedirs (path, exist_ok= True)
-    output_file = os.path.join(output_folder, filename)
+    os.makedirs (path, exist_ok= True)
+    output_file = os.path.join(path, filename)
     df.to_csv (output_file, index= False)
