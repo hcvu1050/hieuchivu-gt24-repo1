@@ -1,2 +1,2 @@
-*.csv
-*.json
+data/*
+!data/.gitkeep
