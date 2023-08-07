@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 def save_df_to_csv (path, filename: str, df: pd.DataFrame ):
-    """save dataframe as csv file within specified path
+    """save pandas DataFrame as csv file within specified path
 
     Args:
         path (string)
