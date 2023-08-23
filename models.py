@@ -64,7 +64,11 @@ class ContentBasedFiltering:
 
     def train(self, train_data, val_data, epochs):
         # Train your model using the provided training data
-        history = self.model.fit(train_data, validation_data=val_data, epochs=epochs)
+        history = self.model.fit(
+            train_data, 
+            validation_data=val_data, 
+            epochs=epochs,
+            callbacks=self.early_stopping)
         return history
     
     def evaluate(self, test_data):
