@@ -3,9 +3,21 @@ from keras.losses import BinaryCrossentropy
 from tensorflow import keras
 
 class ContentBasedFiltering:
-    def __init__(self, num_G_features, num_T_features  ):
+    # v0.1
+    def __init__(self, 
+                 num_G_features, 
+                 num_T_features,
+                 Group_NN_width,
+                 Group_NN_depth,
+                 Technique_NN_width,
+                 Technique_NN_depth):
         self.seed = 17
         self.set_random_seed()
+        
+        self.Group_NN_width = Group_NN_width
+        self.Group_NN_depth = Group_NN_depth
+        self.Technique_NN_width = Technique_NN_width
+        self.Technique_NN_depth = Technique_NN_depth
         
         self.num_outputs = 32
         self.num_G_features = num_G_features
@@ -23,6 +35,7 @@ class ContentBasedFiltering:
     def set_random_seed(self):
         tf.random.set_seed(self.seed)
     
+    
     def build_model(self):
         # Define your model architecture using TensorFlow's API
         self.set_random_seed()
@@ -32,7 +45,7 @@ class ContentBasedFiltering:
             tf.keras.layers.Dense (256, activation = 'relu'),
             tf.keras.layers.Dense (128, activation = 'relu'),
             tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear'),
+            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Group'),
             ], 
         name= "Group_NN")
         input_Group = tf.keras.layers.Input(shape = (self.num_G_features), name = "input_Group")
@@ -44,7 +57,7 @@ class ContentBasedFiltering:
             tf.keras.layers.Dense (256, activation = 'relu'),
             tf.keras.layers.Dense (128, activation = 'relu'),
             tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear'),  
+            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Technique'),  
             ],
         name = "Technique_NN")
         input_Technique = tf.keras.layers.Input (shape= (self.num_T_features), name = "input_Technique")
