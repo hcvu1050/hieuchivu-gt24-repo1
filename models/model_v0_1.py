@@ -6,18 +6,9 @@ class ContentBasedFiltering:
     # v0.1
     def __init__(self, 
                  num_G_features, 
-                 num_T_features,
-                 Group_NN_width,
-                 Group_NN_depth,
-                 Technique_NN_width,
-                 Technique_NN_depth):
+                 num_T_features,):
         self.seed = 17
         self.set_random_seed()
-        
-        self.Group_NN_width = Group_NN_width
-        self.Group_NN_depth = Group_NN_depth
-        self.Technique_NN_width = Technique_NN_width
-        self.Technique_NN_depth = Technique_NN_depth
         
         self.num_outputs = 32
         self.num_G_features = num_G_features
