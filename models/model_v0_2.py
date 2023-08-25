@@ -3,7 +3,7 @@ from keras.losses import BinaryCrossentropy
 from tensorflow import keras
 
 class ContentBasedFiltering:
-    # v0.1
+    # v0.2
     def __init__(self, 
                  num_G_features, 
                  num_T_features,
@@ -35,31 +35,29 @@ class ContentBasedFiltering:
     def set_random_seed(self):
         tf.random.set_seed(self.seed)
     
+    def build_hidden_layers(self, width, depth):
+        layers = []
+        for _ in range (depth):
+            layers.append(tf.keras.layers.Dense (width, activation = 'relu'))
+        return layers
     
     def build_model(self):
         # Define your model architecture using TensorFlow's API
         self.set_random_seed()
         ### Group NN
         Group_NN = tf.keras.models.Sequential(
-            layers=[
-            tf.keras.layers.Dense (256, activation = 'relu'),
-            tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Group'),
-            ], 
-        name= "Group_NN")
+            layers= self.build_hidden_layers (width= self.Group_NN_width, depth = self.Group_NN_depth) +
+            [tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Group')],
+            name= "Group_NN")
         input_Group = tf.keras.layers.Input(shape = (self.num_G_features), name = "input_Group")
         vg = Group_NN(input_Group)
         
         ### Technique NN
+        self.set_random_seed()
         Technique_NN = tf.keras.models.Sequential(
-            layers = [
-            tf.keras.layers.Dense (256, activation = 'relu'),
-            tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (128, activation = 'relu'),
-            tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Technique'),  
-            ],
-        name = "Technique_NN")
+            layers = self.build_hidden_layers (width= self.Technique_NN_width, depth= self.Technique_NN_depth) +
+            [tf.keras.layers.Dense (self.num_outputs, activation  = 'linear', name = 'output_Technique')],  
+            name = "Technique_NN")
         input_Technique = tf.keras.layers.Input (shape= (self.num_T_features), name = "input_Technique")
         vt = Technique_NN (input_Technique)
         # vt = tf.linalg.l2_normalize (vt, axis = 1)
@@ -71,7 +69,7 @@ class ContentBasedFiltering:
 
     def compile_model (self):
         self.set_random_seed()
-        opt = keras.optimizers.Adam (learning_rate= 0.05)
+        opt = keras.optimizers.Adam (learning_rate= 0.01)
         self.model.compile  (optimizer = opt, loss = BinaryCrossentropy (from_logits= True))
         
 
