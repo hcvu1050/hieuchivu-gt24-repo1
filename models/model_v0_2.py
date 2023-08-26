@@ -14,21 +14,25 @@ class ContentBasedFiltering:
         self.seed = 17
         self.set_random_seed()
         
+        # input / output config
+        self.num_G_features = num_G_features
+        self.num_T_features = num_T_features
+        self.num_outputs = 32
+        
+        # neural network config
         self.Group_NN_width = Group_NN_width
         self.Group_NN_depth = Group_NN_depth
         self.Technique_NN_width = Technique_NN_width
         self.Technique_NN_depth = Technique_NN_depth
         
-        self.num_outputs = 32
-        self.num_G_features = num_G_features
-        self.num_T_features = num_T_features
         
         self.early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',  # Monitor validation loss for early stopping
         patience=32,           # Number of epochs with no improvement before stopping
         restore_best_weights=True  # Restore model weights from the epoch with the best validation loss
         )   
-        # Define and compile your model here
+
+        # BUILD MODEL
         self.model = self.build_model()
         self.compile_model ()
     
@@ -42,7 +46,6 @@ class ContentBasedFiltering:
         return layers
     
     def build_model(self):
-        # Define your model architecture using TensorFlow's API
         self.set_random_seed()
         ### Group NN
         Group_NN = tf.keras.models.Sequential(
@@ -60,7 +63,6 @@ class ContentBasedFiltering:
             name = "Technique_NN")
         input_Technique = tf.keras.layers.Input (shape= (self.num_T_features), name = "input_Technique")
         vt = Technique_NN (input_Technique)
-        # vt = tf.linalg.l2_normalize (vt, axis = 1)
         output = tf.keras.layers.Dot (axes=1)(inputs= [vg, vt])
         
         model = tf.keras.Model (inputs = [input_Group, input_Technique],
@@ -74,7 +76,6 @@ class ContentBasedFiltering:
         
 
     def train(self, train_data, val_data, epochs):
-        # Train your model using the provided training data
         history = self.model.fit(
             train_data, 
             validation_data=val_data, 
