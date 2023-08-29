@@ -64,7 +64,7 @@ class ContentBasedFiltering(keras.Model):
             name = "Technique_NN")
         input_Technique = tf.keras.layers.Input (shape= (self.num_T_features), name = "input_Technique")
         vt = Technique_NN (input_Technique)
-        output = tf.keras.layers.Dot (axes=1)(inputs= [vg, vt])
+        output = tf.keras.layers.Dot (axes=1)(inputs= [vg, vt], )
         
         model = tf.keras.Model (inputs = [input_Group, input_Technique],
                         outputs = output, name = 'recsysNN_model')
