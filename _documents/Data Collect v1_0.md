@@ -1,4 +1,14 @@
 # Data Collect V1.0
+
+> SUMMARY
+> 
+> After downloading MITRE ATT&CK data (v13.1 Enterprise), we extract the following pandas DataFrames and save as csv files:
+> 1. `technique_df.csv`: list of all Techniques
+> 2. `techniques_mitigations_df.csv`: list of all Mitigations for each Techniques
+> 3. `groups_df.csv`: list of all Groups
+> 4. `groups_techniques_df.csv`: list of all Techniques used by each Group
+> 5. `groups_software_df.csv`: list of all Software used by each Group
+
 # 1- Collect Data from MITRE ATT&CK
 - `enterprise-attack.json` is MITRE ATT&CK data, downloaded from [cti/enterprise-attack/enterprise-attack.json at master · mitre/cti (github.com)](https://github.com/mitre/cti/blob/master/enterprise-attack/enterprise-attack.json)
 	- Current version: **ATT&CK v13.1 Enterprise**
@@ -43,12 +53,3 @@ groups_df = groups_data['groups']
 groups_techniques_df = groups_data['techniques used']
 groups_software_df = groups_data['associated software']
 ```
-
-> SUMMARY
-> 
-> After downloading MITRE ATT&CK data (v13.1 Enterprise), we extract the following pandas DataFrames and save as csv files:
-> 1. `technique_df.csv`: list of all Techniques
-> 2. `techniques_mitigations_df.csv`: list of all Mitigations for each Techniques
-> 3. `groups_df.csv`: list of all Groups
-> 4. `groups_techniques_df.csv`: list of all Techniques used by each Group
-> 5. `groups_software_df.csv`: list of all Software used by each Group
