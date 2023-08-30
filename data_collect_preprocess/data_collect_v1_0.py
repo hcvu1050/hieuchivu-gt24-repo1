@@ -4,20 +4,51 @@ import pandas as pd
 
 import sys
 import os
-from ..attck_utils import save_df_to_csv
-
 # Get the root directory of the project
 root_folder = os.path.dirname(os.path.dirname(os.path.abspath('__file__')))
-
 mitre_attck_file_path = os.path.join(root_folder, 'data', 'enterprise-attack.json')
+data_dir = os.path.join(root_folder, 'data')
 
+def save_df_to_csv (path, filename: str, df: pd.DataFrame ):
+    """save pandas DataFrame as csv file within specified path
+
+    Args:
+        path (string)
+        df (pandas DataFrame)
+    """
+    if not filename.endswith (".csv"): filename+= ".csv"
+    
+    os.makedirs (path, exist_ok= True)
+    output_file = os.path.join(path, filename)
+    df.to_csv (output_file, index= False)
+    
+def batch_save_df_to_csv (file_name_dfs: dict, path):
+    """
+    save the DataFrames stored in a dict as csv file. The filenames are the keys in the dict
+    """
+    for key in file_name_dfs.keys():
+        save_df_to_csv (
+            path = path,
+            filename = key,
+            df = file_name_dfs[key]
+        )
+    
+    print ("files saved to", path)
+    
+    for key in file_name_dfs.keys():
+        print (key, ".csv", sep = '')
 
 def data_collect(file_path = mitre_attck_file_path):
     """
     v1.0
     
-    reads 'enterprise-attack.json' from `path`
-    
+    Reads 'enterprise-attack.json' from `path`.
+    Returns the following DataFrames:
+        techniques_df, 
+        techniques_mitigations_df, 
+        groups_df, 
+        groups_techniques_df, 
+        groups_software_df
     """
     
     attackdata = MemoryStore ()
@@ -33,12 +64,12 @@ def data_collect(file_path = mitre_attck_file_path):
         
     return techniques_df, techniques_mitigations_df, groups_df, groups_techniques_df, groups_software_df
 
-data_dir = os.path.join(root_folder, 'data')
 
 def data_collect_and_save(data_dir = data_dir):
     """
-    v 1.0
-    save these following DataFrames as csv in specifed path:
+    v1.0
+    
+    save the following DataFrames as csv in specifed path:
         techniques_df, 
         techniques_mitigations_df, 
         groups_df, 
@@ -55,6 +86,6 @@ def data_collect_and_save(data_dir = data_dir):
     "groups_techniques_df" : groups_techniques_df,
     "groups_software_df" : groups_software_df,
     }
-    
+    batch_save_df_to_csv (dfs, data_dir)
     
     
