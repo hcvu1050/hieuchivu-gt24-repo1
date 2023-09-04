@@ -44,11 +44,11 @@ def data_collect(file_path = mitre_attck_file_path):
     
     Reads 'enterprise-attack.json' from `path`.
     Returns the following DataFrames:
-        techniques_df, 
-        techniques_mitigations_df, 
-        groups_df, 
-        groups_techniques_df, 
-        groups_software_df
+        techniques_df, \n
+        techniques_mitigations_df, \n
+        groups_df, \n
+        groups_techniques_df, \n
+        groups_software_df\n
     """
     
     attackdata = MemoryStore ()
@@ -70,11 +70,11 @@ def data_collect_and_save(data_dir = data_dir):
     v1.0
     
     save the following DataFrames as csv in specifed path:
-        techniques_df, 
-        techniques_mitigations_df, 
-        groups_df, 
-        groups_techniques_df, 
-        groups_software_df
+        techniques_df, \n
+        techniques_mitigations_df, \n
+        groups_df, \n
+        groups_techniques_df, \n
+        groups_software_df\n
     
     """
     techniques_df, techniques_mitigations_df, groups_df, groups_techniques_df, groups_software_df = data_collect()
@@ -87,5 +87,6 @@ def data_collect_and_save(data_dir = data_dir):
     "groups_software_df" : groups_software_df,
     }
     batch_save_df_to_csv (dfs, data_dir)
+    return techniques_df, techniques_mitigations_df, groups_df, groups_techniques_df, groups_software_df
     
     
