@@ -1,4 +1,4 @@
-name: hieuchivu-gt24
+name: hieuchivu-gt24-env
 channels:
   - conda-forge
   - anaconda
